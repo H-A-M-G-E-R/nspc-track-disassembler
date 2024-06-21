@@ -76,16 +76,16 @@ DestinationE606:     dw PatternE65E,
                         $0000
 
 ; Track pointers
-PatternE62E:            dw TrackE6CE, $0000, $0000, $0000, $0000, $0000, $0000, $0000
-PatternE63E:            dw TrackE6DD, TrackE70A, TrackE78A, TrackE792, TrackE809, TrackE822, $0000, $0000
-PatternE64E:            dw TrackE83E, TrackE856, TrackE874, TrackE8A0, TrackE8DD, $0000, $0000, $0000
-PatternE65E:            dw TrackE900, TrackE918, TrackE975, TrackE981, TrackE9DC, TrackEA24, $0000, $0000
-PatternE66E:            dw TrackEA54, TrackEA7E, TrackEA9B, TrackEAB5, TrackEAC8, TrackEADF, $0000, $0000
-PatternE67E:            dw TrackEAF7, TrackEB44, TrackEB8C, TrackEBB1, TrackEBD6, TrackEBFB, $0000, $0000
-PatternE68E:            dw TrackEC17, TrackEC46, TrackEC4E, TrackEC74, TrackECAB, $0000, $0000, $0000
-PatternE69E:            dw TrackECBC, TrackECD8, TrackECF4, TrackED31, TrackED6C, TrackED8E, $0000, $0000
-PatternE6AE:            dw TrackEDB6, TrackEDEB, TrackEE07, TrackEE40, TrackEE79, TrackEEBF, $0000, $0000
-PatternE6BE:            dw TrackEEDA, TrackEEF1, TrackEF7C, TrackEF87, TrackF00D, TrackF046, $0000, $0000
+PatternE62E:         dw TrackE6CE, $0000, $0000, $0000, $0000, $0000, $0000, $0000
+PatternE63E:         dw TrackE6DD, TrackE70A, TrackE78A, TrackE792, TrackE809, TrackE822, $0000, $0000
+PatternE64E:         dw TrackE83E, TrackE856, TrackE874, TrackE8A0, TrackE8DD, $0000, $0000, $0000
+PatternE65E:         dw TrackE900, TrackE918, TrackE975, TrackE981, TrackE9DC, TrackEA24, $0000, $0000
+PatternE66E:         dw TrackEA54, TrackEA7E, TrackEA9B, TrackEAB5, TrackEAC8, TrackEADF, $0000, $0000
+PatternE67E:         dw TrackEAF7, TrackEB44, TrackEB8C, TrackEBB1, TrackEBD6, TrackEBFB, $0000, $0000
+PatternE68E:         dw TrackEC17, TrackEC46, TrackEC4E, TrackEC74, TrackECAB, $0000, $0000, $0000
+PatternE69E:         dw TrackECBC, TrackECD8, TrackECF4, TrackED31, TrackED6C, TrackED8E, $0000, $0000
+PatternE6AE:         dw TrackEDB6, TrackEDEB, TrackEE07, TrackEE40, TrackEE79, TrackEEBF, $0000, $0000
+PatternE6BE:         dw TrackEEDA, TrackEEF1, TrackEF7C, TrackEF87, TrackF00D, TrackF046, $0000, $0000
 
 ; Track set $E62E, track 0 commands
 {
@@ -399,7 +399,7 @@ TrackE856:           db $E0,!Instrument21,       ; Select instrument 21h
 
 ; Track set $E64E, track 2 commands
 {
-TrackE874:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackE874:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones
@@ -430,7 +430,7 @@ TrackE874:           db $E0,!InstrumentCB,       ; Select instrument CBh
 
 ; Track set $E64E, track 3 commands
 {
-TrackE8A0:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackE8A0:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$05,       ; Panning bias = 5 / 14h with no phase inversion
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones
@@ -528,7 +528,7 @@ TrackE900:           db $E0,!Instrument1A,       ; Select instrument 1Ah
 
 ; Track set $E65E, track 1 commands
 {
-TrackE918:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackE918:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$0D,       ; Panning bias = Dh / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -553,7 +553,7 @@ TrackE918:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $87,          ; Note G_1
                         $0C,$7F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $87,          ; Note G_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $93,          ; Note G_2
                         $18,          ; Note length = 18h tics
@@ -574,7 +574,7 @@ TrackE918:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $83,          ; Note Eb_1
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $83,          ; Note Eb_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $18,$7F,       ; Note length = 18h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $91,          ; Note F_2
@@ -585,7 +585,7 @@ TrackE918:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $85,          ; Note F_1
                         $0C,$7F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $85,          ; Note F_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $18,          ; Note length = 18h tics
                         $91          ; Note F_2
@@ -601,7 +601,7 @@ TrackE975:           db $E0,!Instrument21,       ; Select instrument 21h
 
 ; Track set $E65E, track 3 commands
 {
-TrackE981:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackE981:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$07,       ; Panning bias = 7 / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -624,7 +624,7 @@ TrackE981:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $87,          ; Note G_1
                         $0B,$7F,       ; Note length = Bh tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $87,          ; Note G_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $0C,          ; Note length = Ch tics
                         $87,          ; Note G_1
@@ -644,7 +644,7 @@ TrackE981:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $83,          ; Note Eb_1
                         $0B,$1F,       ; Note length = Bh tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $83,          ; Note Eb_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $19,$7F,       ; Note length = 19h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $85,          ; Note F_1
@@ -656,7 +656,7 @@ TrackE981:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $85,          ; Note F_1
                         $0B,$7F,       ; Note length = Bh tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $85,          ; Note F_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $18,          ; Note length = 18h tics
                         $85          ; Note F_1
@@ -713,7 +713,7 @@ TrackE9DC:           db $EF : dw TrackF0AD : db $01,  ; Play subsection $F0AD 1 
 
 ; Track set $E65E, track 5 commands
 {
-TrackEA24:           db $E0,!InstrumentCA,       ; Select instrument CAh
+TrackEA24:           db $E0,!InstrumentCA,       ; Select percussion instrument 0
                         $ED,$64,       ; Volume multiplier = 64h / 100h
                         $E1,$14,       ; Panning bias = 14h / 14h with no phase inversion
                         $E2,$C0,$00,    ; Dynamic panning over C0h tics with target panning bias 0 / 14h
@@ -884,7 +884,7 @@ TrackEAC8:           db $EF : dw TrackF12F : db $01,  ; Play subsection $F12F 1 
 
 ; Track set $E66E, track 5 commands
 {
-TrackEADF:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackEADF:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$0A,       ; Panning bias = Ah / 14h with no phase inversion
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones
@@ -1153,7 +1153,7 @@ TrackEC46:           db $EF : dw TrackF0D5 : db $01,  ; Play subsection $F0D5 1 
 {
 TrackEC4E:           db $EF : dw TrackF0EE : db $01,  ; Play subsection $F0EE 1 times
                         $EF : dw TrackF100 : db $01,  ; Play subsection $F100 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$F0,       ; Volume multiplier = F0h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -1178,14 +1178,14 @@ TrackEC4E:           db $EF : dw TrackF0EE : db $01,  ; Play subsection $F0EE 1 
 ; Track set $E68E, track 3 commands
 {
 TrackEC74:           db $EF : dw TrackF10F : db $01,  ; Play subsection $F10F 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$F0,       ; Volume multiplier = F0h / 100h
                         $E1,$05,       ; Panning bias = 5 / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
                         $E3,$06,$1E,$1E, ; Static vibrato after 6 tics at rate 1Eh with extent 1Eh
                         $0C,          ; Note length = Ch tics
                         $87,          ; Note G_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones
@@ -1280,7 +1280,7 @@ TrackECD8:           db $E0,!Instrument21,       ; Select instrument 21h
 
 ; Track set $E69E, track 2 commands
 {
-TrackECF4:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackECF4:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -1300,7 +1300,7 @@ TrackECF4:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $87,          ; Note G_1
                         $EF : dw TrackF14A : db $01,  ; Play subsection $F14A 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $0C,$7F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $9A,          ; Note D_3
@@ -1309,7 +1309,7 @@ TrackECF4:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $87,          ; Note G_1
                         $87,          ; Note G_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $18,$7F,       ; Note length = 18h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $99,          ; Note Db_3
@@ -1320,7 +1320,7 @@ TrackECF4:           db $E0,!InstrumentCB,       ; Select instrument CBh
 
 ; Track set $E69E, track 3 commands
 {
-TrackED31:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackED31:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $E1,$05,       ; Panning bias = 5 / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -1338,7 +1338,7 @@ TrackED31:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $87,          ; Note G_1
                         $EF : dw TrackF14A : db $01,  ; Play subsection $F14A 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $0C,$7F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $8E,          ; Note D_2
@@ -1347,7 +1347,7 @@ TrackED31:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $87,          ; Note G_1
                         $87,          ; Note G_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $18,$7F,       ; Note length = 18h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $8D,          ; Note Db_2
@@ -1506,7 +1506,7 @@ TrackEE07:           db $E0,!Instrument25,       ; Select instrument 25h
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $89,          ; Note A_1
                         $EF : dw TrackF173 : db $01,  ; Play subsection $F173 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $F4,$50,       ; Set subtranspose of 50h / 100h semitones
                         $06,$7F,       ; Note length = 6 tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
@@ -1519,7 +1519,7 @@ TrackEE07:           db $E0,!Instrument25,       ; Select instrument 25h
                         $89,          ; Note A_1
                         $0C,          ; Note length = Ch tics
                         $89,          ; Note A_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
                         $18,$7F,       ; Note length = 18h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
@@ -1546,7 +1546,7 @@ TrackEE40:           db $E0,!Instrument25,       ; Select instrument 25h
                         $0C,$1F,       ; Note length = Ch tics, note volume multiplier = FCh / 100h, note ring length multiplier = 65h / 100h
                         $89,          ; Note A_1
                         $EF : dw TrackF173 : db $01,  ; Play subsection $F173 1 times
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $F4,$50,       ; Set subtranspose of 50h / 100h semitones
                         $06,$7F,       ; Note length = 6 tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
@@ -1559,7 +1559,7 @@ TrackEE40:           db $E0,!Instrument25,       ; Select instrument 25h
                         $89,          ; Note A_1
                         $0C,          ; Note length = Ch tics
                         $89,          ; Note A_1
-                        $E0,!InstrumentCB,       ; Select instrument CBh
+                        $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$E6,       ; Volume multiplier = E6h / 100h
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
                         $18,$7F,       ; Note length = 18h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
@@ -1571,7 +1571,7 @@ TrackEE40:           db $E0,!Instrument25,       ; Select instrument 25h
 
 ; Track set $E6AE, track 4 commands
 {
-TrackEE79:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackEE79:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$C8,       ; Volume multiplier = C8h / 100h
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones
                         $E1,$13,       ; Panning bias = 13h / 14h with no phase inversion
@@ -1667,7 +1667,7 @@ TrackEEDA:           db $E0,!Instrument1A,       ; Select instrument 1Ah
 
 ; Track set $E6BE, track 1 commands
 {
-TrackEEF1:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackEEF1:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$F0,       ; Volume multiplier = F0h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F3,          ; End slide
@@ -1676,7 +1676,7 @@ TrackEEF1:           db $E0,!InstrumentCB,       ; Select instrument CBh
                         $C9,          ; Rest
                         $0B,$7F,       ; Note length = Bh tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $93,          ; Note G_2
-                        $E0,!InstrumentCA,       ; Select instrument CAh
+                        $E0,!InstrumentCA,       ; Select percussion instrument 0
                         $ED,$8C,       ; Volume multiplier = 8Ch / 100h
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
                         $E1,$13,       ; Panning bias = 13h / 14h with no phase inversion
@@ -1767,14 +1767,14 @@ TrackEF7C:           db $E0,!Instrument21,       ; Select instrument 21h
 
 ; Track set $E6BE, track 3 commands
 {
-TrackEF87:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackEF87:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$D2,       ; Volume multiplier = D2h / 100h
                         $E1,$05,       ; Panning bias = 5 / 14h with no phase inversion
                         $F3,          ; End slide
                         $F4,$32,       ; Set subtranspose of 32h / 100h semitones
                         $11,$7F,       ; Note length = 11h tics, note volume multiplier = FCh / 100h, note ring length multiplier = FCh / 100h
                         $87,          ; Note G_1
-                        $E0,!InstrumentCA,       ; Select instrument CAh
+                        $E0,!InstrumentCA,       ; Select percussion instrument 0
                         $ED,$78,       ; Volume multiplier = 78h / 100h
                         $E1,$01,       ; Panning bias = 1 / 14h with no phase inversion
                         $F4,$00,       ; Set subtranspose of 0 / 100h semitones
@@ -1854,7 +1854,7 @@ TrackEF87:           db $E0,!InstrumentCB,       ; Select instrument CBh
 
 ; Track set $E6BE, track 4 commands
 {
-TrackF00D:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackF00D:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$C8,       ; Volume multiplier = C8h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$32,       ; Set subtranspose of 32h / 100h semitones
@@ -2010,7 +2010,7 @@ TrackF0A4:           db $93,          ; Note G_2
 
 ; Repeated subsection
 {
-TrackF0AD:           db $E0,!InstrumentCB,       ; Select instrument CBh
+TrackF0AD:           db $E0,!InstrumentCB,       ; Select percussion instrument 1
                         $ED,$C8,       ; Volume multiplier = C8h / 100h
                         $E1,$0F,       ; Panning bias = Fh / 14h with no phase inversion
                         $F4,$1E,       ; Set subtranspose of 1Eh / 100h semitones

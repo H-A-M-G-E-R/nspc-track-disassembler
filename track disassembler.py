@@ -66,7 +66,10 @@ def decodeTracker(p_tracker):
                 if commandId == 0xE0:
                     v = romRead()
                     parameters = [v]
-                    comment = f'Select instrument {formatValue(v)}'
+                    if v >= 0xCA:
+                        comment = f'Select percussion instrument {formatValue(v - 0xCA)}'
+                    else:
+                        comment = f'Select instrument {formatValue(v)}'
                     usedInstruments |= {v}
                 elif commandId == 0xE1:
                     v = romRead()
@@ -200,12 +203,14 @@ def decodeTracker(p_tracker):
                     comment = 'Stop sound effects and disable music note processing'
                 elif commandId == 0xFE:
                     comment = 'Resume sound effects and enable music note processing'
+                elif commandId == 0xFF:
+                    comment = 'Crash'
             
             if not parameterSizes:
                 parameterSizes = [1] * len(parameters)
                 
             trackCommands += [(p_command, commandId, parameters, parameterSizes, comment)]
-            if commandId == 0:
+            if commandId == 0 or commandId == 0xFF:
                 break
         
         print()
@@ -289,7 +294,7 @@ def decodeTracker(p_tracker):
         rowTrackPointers = [(p_trackSet, i_track, romRead(2)) for i_track in range(8)]
         trackPointers += [(p_trackSet, i_track, p_track) for (p_trackSet, i_track, p_track) in rowTrackPointers if p_track != 0]
         
-        print(f'Pattern{p_trackSet:04X}:            dw ', end = '')
+        print(f'Pattern{p_trackSet:04X}:         dw ', end = '')
         print(', '.join(f'Track{p_track:04X}' if p_track >= 0x100 else f'${p_track:04X}' for (_, _, p_track) in rowTrackPointers))
         
         p_minTrackSet = min(trackPointers, key = lambda trackPointer: trackPointer[2])[2]
