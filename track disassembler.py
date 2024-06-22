@@ -305,6 +305,8 @@ def decodeTracker(p_tracker):
     subsectionPointers = set()
     for ((p_trackSet, i_track, p_track), (_, _, p_nextTrack)) in zip(trackPointers, trackPointers[1:] + [(None, None, 0x10000)]):
         label = f'; Track set ${p_trackSet:04X}, track {i_track} commands'
+        if p_nextTrack == 0x10000 and len(subsectionPointers) > 0:
+            p_nextTrack = min(subsectionPointers)
         subsectionPointers |= decodeTrack(p_track, p_nextTrack, label)
         if tellAram() != p_nextTrack and tellAram() not in subsectionPointers and (subsectionPointers or p_nextTrack != 0x10000):
             print(f'; Printing unused track at ${tellAram():04X}', file = sys.stderr)
