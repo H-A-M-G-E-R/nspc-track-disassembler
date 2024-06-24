@@ -324,7 +324,7 @@ def decodeTracker(p_tracker):
 if len(sys.argv) > 2:
     decodeTracker(int(sys.argv[2], base=16))
 else:
-    for p_table in range(0x10000-5):
+    for p_table in range(0xFFFC):
         if romRead(5, tellAram()) == 0x0C028F40DA: # Scans for a 'movw $40,ya : mov $0C,#$02'. Works for most games with some exceptions like Kirby Super Star.
             p_table -= 2
             if p_table == 0x0AF6 and romRead(2, address=p_table) == 0x1FD6: # F-Zero's case
