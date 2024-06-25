@@ -24,11 +24,13 @@ def aramSeek(address):
 rom = open(sys.argv[1], 'rb')
 
 usedInstruments = set()
+i_instruments = 0
 
 def decodeTracker(p_tracker):
     
     def decodeTrack(p_track, p_nextTrack, label):
         global usedInstruments
+        global i_instruments
     
         if tellAram() != p_track:
             print(f'; Missing track data at ${tellAram():04X}..${p_track:04X}', file = sys.stderr)
@@ -349,4 +351,4 @@ else:
                 decodeTracker(romRead(2, address=romRead(2, address=p_table)+2*songIndex))
             break
         aramSeek(p_table+1)
-print('; Used instruments: ' + ', '.join(f'{formatValue(instrumentID)}' for instrumentID in sorted(usedInstruments)), file = sys.stderr)
+print('; Used instruments: ' + ', '.join(f'{formatValue(instrumentID)} ({formatValue(instrumentID - 0xCA + i_instruments)})' if instrumentID >= 0xCA else f'{formatValue(instrumentID)}' for instrumentID in sorted(usedInstruments)), file = sys.stderr)
