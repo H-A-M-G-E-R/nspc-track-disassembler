@@ -34,7 +34,7 @@ def decodeTracker(p_tracker):
     
         if tellAram() != p_track:
             print(f'; Missing track data at ${tellAram():04X}..${p_track:04X}', file = sys.stderr)
-            rom.seek(p_track)
+            aramSeek(p_track)
             
         trackCommands = []
         subsectionPointers = set()
