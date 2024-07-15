@@ -297,10 +297,9 @@ def decodeTracker(p_tracker):
         trackPointers += [(p_trackSet, i_track, p_track) for (p_trackSet, i_track, p_track) in rowTrackPointers if p_track != 0]
         
         print(f'Pattern{p_trackSet:04X}:         dw ', end = '')
-        print(', '.join(f'Track{p_track:04X}' if p_track >= 0x100 else f'${p_track:04X}' for (_, _, p_track) in rowTrackPointers))
+        print(', '.join(f'Track{p_track:04X}' if p_track >= 0x100 else f'${p_track:04X}' for (_, _, p_track) in rowTrackPointers), end = '\n' if p_trackSet in trackSetPointers else ' ; Unused\n')
         
-        p_minTrackSet = min(trackPointers, key = lambda trackPointer: trackPointer[2])[2]
-        if tellAram() >= p_minTrackSet:
+        if tellAram() >= max(trackSetPointers) + 16:
             break
         
     trackPointers.sort(key = lambda trackPointer: trackPointer[2])
@@ -310,11 +309,11 @@ def decodeTracker(p_tracker):
         if p_nextTrack == 0x10000 and len(subsectionPointers) > 0:
             p_nextTrack = min(subsectionPointers)
         subsectionPointers |= decodeTrack(p_track, p_nextTrack, label)
-        if tellAram() != p_nextTrack and tellAram() not in subsectionPointers and (subsectionPointers or p_nextTrack != 0x10000):
+        '''if tellAram() != p_nextTrack and tellAram() not in subsectionPointers and (subsectionPointers or p_nextTrack != 0x10000):
             print(f'; Printing unused track at ${tellAram():04X}', file = sys.stderr)
             decodeTrack(tellAram(), p_nextTrack, '; Unused track commands')
             if tellAram() > p_nextTrack:
-                print(f'; Printed too much tracker data (tell = ${tellAram():04X})', file = sys.stderr)
+                print(f'; Printed too much tracker data (tell = ${tellAram():04X})', file = sys.stderr)'''
     
     while subsectionPointers:
         newSubsectionPointers = set()
