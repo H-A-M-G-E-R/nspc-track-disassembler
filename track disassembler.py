@@ -68,7 +68,7 @@ def decodeTracker(p_tracker):
                 if commandId == 0xE0:
                     v = romRead()
                     parameters = [v]
-                    if v >= 0xCA:
+                    if v >= 0x80:
                         comment = f'Select percussion instrument {formatValue(v - 0xCA)}'
                     else:
                         comment = f'Select instrument {formatValue(v)}'
