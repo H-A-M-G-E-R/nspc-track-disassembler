@@ -1,5 +1,5 @@
-# Exports enemy sprites to PNG, centered at the middle, straight from the ROM!
-# Doesn't support extended tilemaps (e.g. pirates and most bosses)
+# Exports enemy spritemaps to PNG, centered at the middle, straight from the ROM!
+# Doesn't support extended spritemaps (e.g. pirates and most bosses)
 # Uses code from SpriteSomething to turn the spritemap into an image (https://github.com/Artheau/SpriteSomething)
 # Example:
 #   Exports all of the atomic's spritemaps
@@ -44,7 +44,7 @@ def image_from_raw_data(tilemaps, DMA_writes, tile_offset = 0):
 
     canvas = {}
 
-    for tilemap in tilemaps:
+    for tilemap in reversed(tilemaps):
         # tilemap[0] and the 0th bit of tilemap[1] encode the X offset
         x_offset = tilemap[0] - (0x100 if (tilemap[1] & 0x01) else 0)
 
@@ -134,7 +134,7 @@ def convert_tile_from_bitplanes(raw_tile):
     returnvalue = np.fliplr(returnvalue)
     return returnvalue
 
-parser = argparse.ArgumentParser(description='Exports enemy sprites to PNG')
+parser = argparse.ArgumentParser(description='Exports enemy spritemaps to PNG')
 parser.add_argument('-e', '--enemy', default='0xCEBF', help='Enemy ID')
 parser.add_argument('-s', '--spritemap', default='0x88DA', help='Spritemap pointer in enemy bank (to find them look at PJ\'s banklogs (https://patrickjohnston.org/bank/index.html))')
 parser.add_argument('-b', '--bulk', action = 'store_true', help='Export all spritemaps back-to-back starting from the specified spritemap pointer')
@@ -168,10 +168,10 @@ romSeek(spritemap_pointer)
 image_index = 0
 while True:
     spritemap = []
-    count = romRead(2)
-    if count > 128:
+    sprite_count = romRead(2)
+    if sprite_count > 128:
         break
-    for i in range(count):
+    for i in range(sprite_count):
         spritemap.append(romRead(5, byte = True))
 
     image = image_from_raw_data(spritemap, tiles, 0x100)
