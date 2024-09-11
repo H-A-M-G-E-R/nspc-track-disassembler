@@ -24,16 +24,17 @@ def aramSeek(address):
 rom = open(sys.argv[1], 'rb')
 
 usedInstruments = set()
+usedPercussions = set()
 i_instruments = 0
 
 def decodeTracker(p_tracker):
     
-    def decodeTrack(p_track, p_nextTrack, label):
+    def decodeTrack(p_track, p_nextTrack, isSubsection):
         global usedInstruments
+        global usedPercussions
         global i_instruments
     
         if tellAram() != p_track:
-            print(f'; Missing track data at ${tellAram():04X}..${p_track:04X}', file = sys.stderr)
             aramSeek(p_track)
             
         trackCommands = []
@@ -63,7 +64,7 @@ def decodeTracker(p_tracker):
                 comment = 'Rest'
             elif 0xCA <= commandId < 0xE0:
                 comment = f'Percussion note {formatValue(commandId - 0xCA)}'
-                usedInstruments |= {commandId}
+                usedPercussions |= {commandId}
             else:
                 if commandId == 0xE0:
                     v = romRead()
@@ -216,89 +217,69 @@ def decodeTracker(p_tracker):
             if commandId == 0 or commandId == 0xFF:
                 break
         
-        print()
-        print(label)
-        print('{', end = '')
         i = 0
         for (p_command, commandId, parameters, parameterSizes, comment) in trackCommands:
-            print()
             if p_command == p_track:
-                print(f'Track{p_command:04X}:           db ', end = '')
+                print(f'S{p_command:04X}: db ' if isSubsection else f'T{p_command:04X}: db ', end = '')
             else:
-                print('                        ', end = '')
-                
+                print(', ', end = '')
+            
             print(f'${commandId:02X}', end = '')
             if commandId == 0xEF:
-                print(f' : dw Track{parameters[0]:04X} : db ${parameters[1]:02X}', end = '')
+                print(f' : dw S{parameters[0]:04X} : db ${parameters[1]:02X}', end = '')
             elif commandId == 0xE0:
-                print(f',!Instrument{parameters[0]:02X}', end = '')
+                print(f',!I{parameters[0]:02X}', end = '')
             else:
                 for (parameter, parameterSize) in zip(parameters, parameterSizes):
                     print(',${{:0{}X}}'.format(parameterSize * 2).format(parameter), end = '')
-                
-            if comment:
-                if i != len(trackCommands)-1:
-                    print(',', end = '')
-                print(' ' * (9 - sum(parameterSizes) * 2 - len(parameterSizes)), end = '')
-                print(f' ; {comment}', end = '')
+            
             i += 1
     
         print()
-        print('}')
         
         return subsectionPointers
     
     trackerCommands = []
     trackerDestinations = [p_tracker]
-    trackSetPointers = []
+    trackSetPointers = set()
     aramSeek(p_tracker)
-    lowestPattern = 0x10000
     while True:
         p_command = tellAram()
         commandId = romRead(2)
         parameters = []
         if commandId >= 0x100:
-            trackSetPointers += [commandId]
-            lowestPattern = min(lowestPattern, commandId)
+            trackSetPointers |= {commandId}
         elif commandId >= 0x01:
             parameters = [romRead(2)]
             trackerDestinations += parameters 
         trackerCommands += [(p_command, commandId, parameters)]
-        if commandId == 0 or tellAram() == lowestPattern:
+        if commandId == 0 or tellAram() in trackSetPointers:
             break
     
-    print()
-    print(f'; Tracker commands', end = '')
     for (p_command, commandId, parameters) in trackerCommands:
         if p_command in trackerDestinations:
             print()
-            print(f'Destination{p_command:04X}:     dw ', end = '')
+            print(f'L{p_command:04X}: dw ' if p_command != p_tracker else f'Start: dw ', end = '')
         else:
-            print(',')
-            print('                        ', end = '')
+            print(',', end = '')
 
         if commandId >= 0x100:
-            print(f'Pattern{commandId:04X}', end = '')
+            print(f'P{commandId:04X}', end = '')
         else:
             print(f'${commandId:04X}', end = '')
             for parameter in parameters:
-                print(f',Destination{parameter:04X}', end = '')
+                print(f',L{parameter:04X}' if p_command != p_tracker else f',Start', end = '')
     
     print()
-    if tellAram() != lowestPattern:
-        print(f'; Missing commands at ${tellAram():04X}..${lowestPattern:04X}', file = sys.stderr)
-        aramSeek(lowestPattern)
-    print()
-    print(f'; Track pointers')
     trackPointers = []
         
-    while True:
-        p_trackSet = tellAram()
+    for p_trackSet in sorted(trackSetPointers):
+        aramSeek(p_trackSet)
         rowTrackPointers = [(p_trackSet, i_track, romRead(2)) for i_track in range(8)]
         trackPointers += [(p_trackSet, i_track, p_track) for (p_trackSet, i_track, p_track) in rowTrackPointers if p_track != 0]
         
-        print(f'Pattern{p_trackSet:04X}:         dw ', end = '')
-        print(', '.join(f'Track{p_track:04X}' if p_track >= 0x100 else f'${p_track:04X}' for (_, _, p_track) in rowTrackPointers), end = '\n' if p_trackSet in trackSetPointers else ' ; Unused\n')
+        print(f'P{p_trackSet:04X}: dw ', end = '')
+        print(','.join(f'T{p_track:04X}' if p_track >= 0x100 else f'${p_track:04X}' for (_, _, p_track) in rowTrackPointers))
         
         if tellAram() >= max(trackSetPointers) + 16:
             break
@@ -306,23 +287,18 @@ def decodeTracker(p_tracker):
     trackPointers.sort(key = lambda trackPointer: trackPointer[2])
     subsectionPointers = set()
     for ((p_trackSet, i_track, p_track), (_, _, p_nextTrack)) in zip(trackPointers, trackPointers[1:] + [(None, None, 0x10000)]):
-        label = f'; Track set ${p_trackSet:04X}, track {i_track} commands'
         if p_nextTrack == 0x10000 and len(subsectionPointers) > 0:
+            #p_nextTrack = min(subsectionPointers)
             for p_subsection in sorted(subsectionPointers):
                 if p_subsection > trackPointers[-1][2]:
                     p_nextTrack = p_subsection
                     break
-        subsectionPointers |= decodeTrack(p_track, p_nextTrack, label)
-        '''if tellAram() != p_nextTrack and tellAram() not in subsectionPointers and (subsectionPointers or p_nextTrack != 0x10000):
-            print(f'; Printing unused track at ${tellAram():04X}', file = sys.stderr)
-            decodeTrack(tellAram(), p_nextTrack, '; Unused track commands')
-            if tellAram() > p_nextTrack:
-                print(f'; Printed too much tracker data (tell = ${tellAram():04X})', file = sys.stderr)'''
+        subsectionPointers |= decodeTrack(p_track, p_nextTrack, False)
     
     while subsectionPointers:
         newSubsectionPointers = set()
         for p_subsection in sorted(subsectionPointers):
-            newSubsectionPointers |= decodeTrack(p_subsection, 0x10000, '; Repeated subsection')
+            newSubsectionPointers |= decodeTrack(p_subsection, 0x10000, True)
         
         subsectionPointers = newSubsectionPointers
 
@@ -355,3 +331,5 @@ else:
             break
         aramSeek(p_table+1)
 print('; Used instruments: ' + ', '.join(f'{formatValue(instrumentID)} ({formatValue(instrumentID - 0xCA + i_instruments)})' if instrumentID >= 0xCA else f'{formatValue(instrumentID)}' for instrumentID in sorted(usedInstruments)), file = sys.stderr)
+if len(usedPercussions) > 0:
+    print('; Used percussion note instruments: ' + ', '.join(f'{formatValue(instrumentID)} ({formatValue(instrumentID - 0xCA + i_instruments)})' for instrumentID in sorted(usedPercussions)), file = sys.stderr)
