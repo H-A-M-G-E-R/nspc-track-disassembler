@@ -6,7 +6,7 @@ import json
 
 signed2byte = lambda n: n if n >= 0 else 0x100 + n
 
-parser = argparse.ArgumentParser(description='Exports arm cannon data to JSON')
+parser = argparse.ArgumentParser(description='Converts arm cannon data from JSON to ASM')
 parser.add_argument('-a', '--addr', default=0x90C7DF, help='Location in ROM to put the table in')
 parser.add_argument('-w', '--warnaddr', default=0x90CC21, help='Warn if pc is over this address')
 parser.add_argument('input', help='Path to JSON input')
